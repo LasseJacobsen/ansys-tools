@@ -1,0 +1,28 @@
+# Bolt Pretension Automation Configuration
+# =========================================
+# Define bolt pretensions to be created automatically based on named selections
+
+# Global settings
+global_settings:
+  log_details: true  # Enable detailed logging
+
+# Bolt pretension definitions
+# Each entry defines pretensions for a named selection of bolt faces
+# Format: NamedSelectionName with pretension force in Newtons
+bolt_pretensions:
+  # Example configurations:
+  # M8_Bolts:
+  #   pretension: 15000  # 15 kN
+
+  # M12_Bolts:
+  #   pretension: 35000  # 35 kN
+
+  # Add your configurations below:
+
+# Reference: Typical bolt pretension values (60-75% of proof load)
+# M6:  8,000 - 10,000 N
+# M8:  15,000 - 18,000 N
+# M10: 24,000 - 30,000 N
+# M12: 35,000 - 42,000 N
+# M16: 63,000 - 78,000 N
+# M20: 98,000 - 122,000 N

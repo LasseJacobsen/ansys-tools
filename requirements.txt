@@ -1,0 +1,16 @@
+# Core scientific packages
+numpy
+pandas
+matplotlib
+
+# ANSYS packages
+ansys-mapdl-core
+ansys-mapdl-reader
+
+# Configuration
+pyyaml
+
+# Development tools
+pytest
+black
+pylint

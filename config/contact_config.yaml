@@ -1,0 +1,22 @@
+# Contact Automation Configuration
+# ================================
+# Define contact regions to be created automatically based on named selections
+
+# Global contact settings
+global_settings:
+  pinball_radius: 1.0  # mm - search distance for automatic contact detection
+  log_details: true    # Enable detailed logging
+
+# Contact definitions
+# Each entry defines contacts for a specific named selection
+contacts:
+  # Example: Bonded contact configuration
+  # NamedSelection1:
+  #   type: bonded
+
+  # Example: Frictional contact configuration
+  # NamedSelection2:
+  #   type: frictional
+  #   friction_coefficient: 0.2
+
+  # Add your configurations below:
