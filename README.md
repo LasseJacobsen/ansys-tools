@@ -332,6 +332,20 @@ bolt_pretensions:
 
 ---
 
+## Version Control
+
+This project uses Git for version control:
+- **Branch**: `master`
+- **Initial Commit**: v0.1.0 - ANSYS Tools automation framework
+
+To track your own changes:
+```bash
+git add .
+git commit -m "Your commit message"
+```
+
+---
+
 ## Version
 
 **v0.1.0** - Initial release
