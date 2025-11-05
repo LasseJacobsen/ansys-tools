@@ -76,3 +76,51 @@ def refresh_tree():
         log("Refreshed object tree")
     except Exception as e:
         log(f"Error refreshing tree: {str(e)}", "ERROR")
+
+
+def named_selection_to_list(named_selection):
+    """
+    Convert a named selection to an iterable list of geometry entities.
+    
+    Uses the selection manager to properly extract entities from named selections.
+    This is the recommended approach for working with named selection contents.
+    
+    Args:
+        named_selection: ANSYS named selection object
+        
+    Returns:
+        list: List of geometry entities from the named selection
+    """
+    try:
+        selection = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
+        selection.Ids = named_selection.Ids
+        entities = list(selection.Entities)
+        log(f"Extracted {len(entities)} entities from named selection")
+        return entities
+    except Exception as e:
+        log(f"Error converting named selection to list: {str(e)}", "ERROR")
+        return []
+
+
+def normalize_named_selection_list(ns_config):
+    """
+    Normalize the named selection configuration to a list.
+    
+    Handles both single string and list/tuple inputs, converting to a standardized list format.
+    
+    Args:
+        ns_config: Either a string (single name) or list/tuple of strings (multiple names)
+        
+    Returns:
+        list: List of named selection names
+        
+    Raises:
+        ValueError: If input is not a string or list/tuple
+    """
+    if isinstance(ns_config, str):
+        return [ns_config]
+    elif isinstance(ns_config, (list, tuple)):
+        return list(ns_config)
+    else:
+        raise ValueError("Named selection configuration must be a string or list/tuple")
+

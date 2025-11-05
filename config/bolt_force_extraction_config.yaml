@@ -1,0 +1,114 @@
+# ============================================================================
+# Bolt Force Extraction Configuration
+# ============================================================================
+#
+# This configuration file controls the automated extraction of bolt reaction
+# forces and moments from ANSYS Mechanical analyses.
+#
+# The script creates local coordinate systems aligned with each bolt face,
+# then creates force and moment reaction probes to measure reactions in
+# the local coordinate system. Results are exported to CSV format.
+#
+# Usage:
+#   1. Configure settings below
+#   2. Create Named Selections in ANSYS containing bolt faces
+#   3. Run: python main.py --extract-forces
+#      Or from ANSYS: Tools > Scripting > Run Script File > postprocessing/bolt_force_extraction.py
+#
+# Author: Lasse Jacobsen (lbj@frecon.dk)
+# Version: 2.1
+# Date: November 2025
+# ============================================================================
+
+# CSV output file path (absolute path recommended)
+# Example Windows: 'C:\data\bolt_forces.csv'
+# Example Linux: '/home/user/data/bolt_forces.csv'
+csv_outfile: 'C:\data\bolt_forces.csv'
+
+# Named selections containing bolt faces to analyze
+# Can be a single string or a list of strings
+# Each face in the named selection will get a coordinate system and probe pair
+#
+# Single named selection:
+#   named_selections: 'M64_export'
+#
+# Multiple named selections:
+named_selections:
+  - 'M64_export'
+  - 'M48_export'
+
+# Analysis index (0-based)
+# Use 0 for first analysis, 1 for second, etc.
+analysis_number: 0
+
+# Time steps to process
+# Options:
+#   'first_last' - Only first and last time steps (fastest)
+#   'all'        - All time steps (most comprehensive)
+#   [1, 2, 5]    - Specific time steps as a list (1-indexed)
+#
+# Examples:
+#   time_steps: 'first_last'
+#   time_steps: 'all'
+#   time_steps: [1, 5, 10]
+time_steps: 'first_last'
+
+# Enable detailed logging to file
+# Creates a timestamped log file in the same directory as CSV output
+# Log filename format: <csv_basename>_log_<timestamp>.txt
+enable_logging: true
+
+# Operation mode
+# Options:
+#   'run_only'      - Create probes and export CSV (default)
+#   'cleanup_only'  - Delete all generated objects without running analysis
+#   'run_cleanup'   - Run analysis, export CSV, then cleanup all objects
+#
+# Use 'cleanup_only' to remove probes from previous runs
+# Use 'run_cleanup' for automated workflows that need clean state
+operation_mode: 'run_only'
+
+# ============================================================================
+# Advanced Notes
+# ============================================================================
+#
+# Coordinate System Naming:
+#   Created coordinate systems follow pattern: CS_<NamedSelection>_<Index>
+#   Example: CS_M64_export_1, CS_M64_export_2, etc.
+#
+# Surface Naming:
+#   Construction geometry surfaces follow pattern: Surface_<NamedSelection>_<Index>
+#   Example: Surface_M64_export_1, Surface_M64_export_2, etc.
+#
+# Probe Naming:
+#   Force probes: Force_<NamedSelection>_<Index>
+#   Moment probes: Moment_<NamedSelection>_<Index>
+#
+# Smart Object Reuse:
+#   The script detects existing objects by name and reuses them.
+#   This avoids duplicates when re-running the script.
+#
+# CSV Output Format:
+#   Header row: 'name', 'time', 'Fx', 'Fy', 'Fz', 'Mx', 'My', 'Mz', 'x_pos', 'y_pos', 'z_pos'
+#   All values in project units (typically N, N·mm, mm)
+#   Coordinate system name indicates which bolt face
+#
+# Body Scoping:
+#   Each probe is automatically scoped to the body that owns the face.
+#   This ensures accurate force extraction even in assemblies.
+#
+# Performance Tips:
+#   - Use 'first_last' for quick checks (2 time steps)
+#   - Use specific time step list for critical steps
+#   - Use 'all' only when comprehensive data needed
+#   - Enable logging for troubleshooting
+#   - Use 'cleanup_only' mode to reset before re-running
+#
+# Typical Workflow:
+#   1. Create named selections for bolt faces
+#   2. Run with 'run_only' mode (default)
+#   3. Check CSV output and log file
+#   4. If re-running, use 'cleanup_only' first to remove old probes
+#   5. Or use 'run_cleanup' for automated clean workflows
+#
+# ============================================================================

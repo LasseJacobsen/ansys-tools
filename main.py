@@ -40,6 +40,13 @@ def run_bolt_pretension_automation():
     bolt_pretensions.main()
 
 
+def run_bolt_force_extraction():
+    """Run bolt force extraction script."""
+    log_section("Running Bolt Force Extraction")
+    from postprocessing import bolt_force_extraction
+    bolt_force_extraction.main()
+
+
 def run_all():
     """Run all automation scripts in sequence."""
     log_section("ANSYS Tools - Running All Automation Scripts")
@@ -49,6 +56,9 @@ def run_all():
 
     log("\n=== Step 2: Bolt Pretension Automation ===")
     run_bolt_pretension_automation()
+
+    log("\n=== Step 3: Bolt Force Extraction ===")
+    run_bolt_force_extraction()
 
     log("")
     log_section("All automation scripts completed!")
@@ -61,8 +71,9 @@ def print_menu():
     print("="*70)
     print("\n1. Run Contact Automation")
     print("2. Run Bolt Pretension Automation")
-    print("3. Run All Automation Scripts")
-    print("4. Exit")
+    print("3. Run Bolt Force Extraction")
+    print("4. Run All Automation Scripts")
+    print("5. Exit")
     print("\n" + "="*70)
 
 
@@ -72,19 +83,21 @@ def interactive_mode():
         print_menu()
 
         try:
-            choice = input("\nEnter your choice (1-4): ").strip()
+            choice = input("\nEnter your choice (1-5): ").strip()
 
             if choice == "1":
                 run_contact_automation()
             elif choice == "2":
                 run_bolt_pretension_automation()
             elif choice == "3":
-                run_all()
+                run_bolt_force_extraction()
             elif choice == "4":
+                run_all()
+            elif choice == "5":
                 print("\nExiting...")
                 break
             else:
-                print("\nInvalid choice. Please enter 1-4.")
+                print("\nInvalid choice. Please enter 1-5.")
 
         except KeyboardInterrupt:
             print("\n\nExiting...")
@@ -108,6 +121,8 @@ def main():
                           help='Run contact automation')
         parser.add_argument('--bolts', action='store_true',
                           help='Run bolt pretension automation')
+        parser.add_argument('--extract-forces', action='store_true',
+                          help='Run bolt force extraction')
         parser.add_argument('--all', action='store_true',
                           help='Run all automation scripts')
         parser.add_argument('--interactive', '-i', action='store_true',
@@ -121,6 +136,8 @@ def main():
             run_contact_automation()
         elif args.bolts:
             run_bolt_pretension_automation()
+        elif args.extract_forces:
+            run_bolt_force_extraction()
         elif args.all:
             run_all()
         else:
